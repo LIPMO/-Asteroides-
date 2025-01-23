@@ -5,9 +5,26 @@ let scoreDisplay = document.getElementById("score");
 let startButton = document.getElementById("start-button");
 let leaderboard = document.getElementById("leaderboard");
 
-let shipX = 200;
-let isBoosting = false;
-let hasShield = false;
+// Boutons et popup
+let controlsButton = document.getElementById("controls-button");
+let controlsPopup = document.getElementById("controls-popup");
+let closeControlsButton = document.getElementById("close-controls");
+
+// Événements des boutons
+controlsButton.addEventListener("click", () => {
+    controlsPopup.classList.remove("hidden");
+});
+
+closeControlsButton.addEventListener("click", () => {
+    controlsPopup.classList.add("hidden");
+});
+
+startButton.addEventListener("click", () => {
+    startGame();
+});
+
+// Charger les scores au démarrage
+loadScores();
 
 async function loadScores() {
     try {
@@ -48,17 +65,26 @@ function updateLeaderboard(scores) {
     });
 }
 
-document.getElementById("controls-button").addEventListener("click", () => {
-    document.getElementById("controls-popup").classList.remove("hidden");
-});
-
-document.getElementById("close-controls").addEventListener("click", () => {
-    document.getElementById("controls-popup").classList.add("hidden");
-});
-
-startButton.addEventListener("click", () => {
+function startGame() {
     score = 0;
     gameOver = false;
     scoreDisplay.textContent = score;
-    loadScores();
-});
+
+    let gameInterval = setInterval(() => {
+        if (!gameOver) {
+            score++;
+            scoreDisplay.textContent = score;
+        }
+    }, 100);
+
+    setTimeout(() => {
+        clearInterval(gameInterval);
+        endGame();
+    }, 30000);
+}
+
+function endGame() {
+    gameOver = true;
+    alert(`Game Over! Score: ${score}`);
+    saveScore(score);
+}

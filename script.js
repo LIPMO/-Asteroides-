@@ -13,13 +13,16 @@ let closeControlsButton = document.getElementById("close-controls");
 // Événements des boutons
 controlsButton.addEventListener("click", () => {
     controlsPopup.classList.remove("hidden");
+    console.log("Popup Contrôles ouvert");
 });
 
 closeControlsButton.addEventListener("click", () => {
     controlsPopup.classList.add("hidden");
+    console.log("Popup Contrôles fermé");
 });
 
 startButton.addEventListener("click", () => {
+    console.log("Jeu démarré");
     startGame();
 });
 
@@ -27,9 +30,11 @@ startButton.addEventListener("click", () => {
 loadScores();
 
 async function loadScores() {
+    console.log("Chargement des scores...");
     try {
         let response = await fetch('scores.json');
         let scores = await response.json();
+        console.log("Scores chargés :", scores);
         updateLeaderboard(scores);
     } catch (error) {
         console.error("Erreur chargement scores:", error);
@@ -37,6 +42,7 @@ async function loadScores() {
 }
 
 async function saveScore(newScore) {
+    console.log("Sauvegarde du score :", newScore);
     try {
         let response = await fetch('scores.json');
         let scores = await response.json();

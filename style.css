@@ -141,3 +141,62 @@ body {
     color: white;
     box-shadow: 0 0 15px rgba(0, 150, 255, 0.7);
 }
+
+/* Style général des boutons */
+button {
+    background: linear-gradient(135deg, #007AFF, #0056D2); /* Dégradé bleu iOS */
+    color: white;
+    border: none;
+    padding: 12px 20px;
+    font-size: 16px;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: all 0.3s ease-in-out;
+    box-shadow: 0 4px 8px rgba(0, 122, 255, 0.3);
+}
+
+button:hover {
+    background: linear-gradient(135deg, #0056D2, #003DA6);
+    transform: scale(1.05);
+    box-shadow: 0 6px 12px rgba(0, 122, 255, 0.5);
+}
+
+button:active {
+    transform: scale(0.95);
+}
+
+/* Bouton Contrôles */
+#controls-button {
+    background: linear-gradient(135deg, #444, #222); /* Thème plus sombre */
+    box-shadow: 0 4px 8px rgba(255, 255, 255, 0.2);
+}
+
+#controls-button:hover {
+    background: linear-gradient(135deg, #333, #111);
+    box-shadow: 0 6px 12px rgba(255, 255, 255, 0.3);
+}
+
+/* Popup de contrôles */
+#controls-popup {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background: rgba(0, 0, 0, 0.9);
+    padding: 20px;
+    border-radius: 10px;
+    text-align: center;
+    color: white;
+    box-shadow: 0 0 15px rgba(0, 150, 255, 0.7);
+}
+
+#controls-popup button {
+    margin-top: 10px;
+    background: red;
+    box-shadow: 0 4px 8px rgba(255, 0, 0, 0.4);
+}
+
+#controls-popup button:hover {
+    background: darkred;
+    box-shadow: 0 6px 12px rgba(255, 0, 0, 0.6);
+}

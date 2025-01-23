@@ -108,3 +108,19 @@ body {
     border-radius: 50%;
     box-shadow: 0 0 15px rgba(50, 255, 50, 0.7);
 }
+
+/* 🏆 Classement */
+#leaderboard {
+    list-style: none;
+    padding: 0;
+    margin-top: 20px;
+}
+
+#leaderboard li {
+    background: rgba(0, 150, 255, 0.2);
+    padding: 8px;
+    margin: 5px 0;
+    border-radius: 5px;
+    font-weight: bold;
+    color: #E6EDF3;
+}

@@ -4,27 +4,34 @@ let ship = document.getElementById("ship");
 let playArea = document.getElementById("play-area");
 let scoreDisplay = document.getElementById("score");
 let startButton = document.getElementById("start-button");
+let leaderboard = document.getElementById("leaderboard");
 
 let shipX = playArea.offsetWidth / 2 - 25;
 let isBoosting = false;
 let hasShield = false;
+let gameOver = false;
 ship.style.left = `${shipX}px`;
 
 function startGame() {
     score = 0;
+    gameOver = false;
     scoreDisplay.textContent = score;
     startButton.disabled = true;
 
     gameInterval = setInterval(() => {
-        score++;
-        scoreDisplay.textContent = score;
+        if (!gameOver) {
+            score++;
+            scoreDisplay.textContent = score;
+        }
     }, 100);
 
     asteroidInterval = setInterval(createAsteroid, 1000);
-    setInterval(spawnShieldPowerUp, 10000); // Spawn d'un bouclier toutes les 10s
+    setInterval(spawnShieldPowerUp, 10000);
 }
 
 function createAsteroid() {
+    if (gameOver) return;
+
     let asteroid = document.createElement("div");
     asteroid.classList.add("asteroid");
     playArea.appendChild(asteroid);
@@ -40,6 +47,8 @@ function createAsteroid() {
     let fallSpeed = Math.random() * 3 + 2;
 
     function moveAsteroid() {
+        if (gameOver) return;
+
         let currentTop = parseFloat(asteroid.style.top);
         asteroid.style.top = `${currentTop + fallSpeed}px`;
 
@@ -58,6 +67,8 @@ function createAsteroid() {
 }
 
 function spawnShieldPowerUp() {
+    if (gameOver) return;
+
     let powerUp = document.createElement("div");
     powerUp.classList.add("power-up");
     playArea.appendChild(powerUp);
@@ -69,6 +80,8 @@ function spawnShieldPowerUp() {
     let fallSpeed = 2;
 
     function movePowerUp() {
+        if (gameOver) return;
+
         let currentTop = parseFloat(powerUp.style.top);
         powerUp.style.top = `${currentTop + fallSpeed}px`;
 
@@ -107,6 +120,37 @@ function checkCollision(el1, el2) {
     );
 }
 
+function endGame() {
+    gameOver = true;
+    clearInterval(gameInterval);
+    clearInterval(asteroidInterval);
+    document.querySelectorAll(".asteroid").forEach(ast => ast.remove());
+    document.querySelectorAll(".power-up").forEach(pu => pu.remove());
+
+    alert(`Game Over! Score: ${score}`);
+    saveScore(score);
+    startButton.disabled = false;
+}
+
+function saveScore(newScore) {
+    let scores = JSON.parse(localStorage.getItem("scores")) || [];
+    scores.push(newScore);
+    scores.sort((a, b) => b - a); // Tri des scores du plus grand au plus petit
+    scores = scores.slice(0, 5); // On garde les 5 meilleurs
+    localStorage.setItem("scores", JSON.stringify(scores));
+    updateLeaderboard();
+}
+
+function updateLeaderboard() {
+    let scores = JSON.parse(localStorage.getItem("scores")) || [];
+    leaderboard.innerHTML = "";
+    scores.forEach(score => {
+        let li = document.createElement("li");
+        li.textContent = `${score} points`;
+        leaderboard.appendChild(li);
+    });
+}
+
 document.addEventListener("keydown", (event) => {
     if (event.key === "ArrowLeft" && shipX > 0) {
         shipX -= 20;
@@ -119,7 +163,7 @@ document.addEventListener("keydown", (event) => {
 });
 
 function activateBoost() {
-    if (!isBoosting) {
+    if (!isBoosting && !gameOver) {
         isBoosting = true;
         let direction = Math.random() < 0.5 ? -100 : 100;
         shipX = Math.max(0, Math.min(playArea.offsetWidth - 50, shipX + direction));
@@ -132,4 +176,7 @@ function activateBoost() {
     }
 }
 
-startButton.addEventListener("click", startGame);
+startButton.addEventListener("click", () => {
+    updateLeaderboard();
+    startGame();
+});

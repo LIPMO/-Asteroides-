@@ -124,3 +124,20 @@ body {
     font-weight: bold;
     color: #E6EDF3;
 }
+
+.hidden {
+    display: none;
+}
+
+#controls-popup {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background: rgba(0, 0, 0, 0.8);
+    padding: 20px;
+    border-radius: 10px;
+    text-align: center;
+    color: white;
+    box-shadow: 0 0 15px rgba(0, 150, 255, 0.7);
+}
